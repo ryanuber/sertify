@@ -8,9 +8,9 @@ function vet_ip4()
     return 0
 }
 
-function vet_ip6()
+function vet_fqdn()
 {
-    return 1
+    [[ "$1" =~ ^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$ ]] || return 1
+    [ ${#1} -lt 257 ] || return 1
+    return 0
 }
-
-
