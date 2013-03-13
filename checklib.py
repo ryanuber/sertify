@@ -1,6 +1,6 @@
 from re import match
 
-def is_ipv4(address):
+def is_ip4(address):
     if match('^[1-9]([0-9]){0,2}(\.[0-9]{1,3}){3}$', address) == None:
         return False
     for oct in address.split('.'):
