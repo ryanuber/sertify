@@ -11,8 +11,19 @@ class CheckIt
       (@indent_str * @indent_lvl) + str
     end
 
+    def indent_more(str)
+      result = self.indent(str)
+      @indent_lvl += 1
+      result
+    end
+
+    def indent_less(str)
+      @indent_lvl -= 1
+      self.indent(str)
+    end
+
     def open_function(name)
-      "function is_#{name}() {"
+      self.indent_more "function is_#{name}() {"
     end
 
     def close_function
@@ -24,15 +35,11 @@ class CheckIt
     end
 
     def open_chunk_loop(split_by)
-      @indent_lvl += 1
-      result = self.indent "for chunk in ${1//#{split_by}/ }; do"
-      @indent_lvl += 1
-      result
+      self.indent_more "for chunk in ${1//#{split_by}/ }; do"
     end
 
     def close_chunk_loop
-      @indent_lvl -= 1
-      self.indent "done"
+      self.indent_less "done"
     end
 
     def min(var_name, min)
@@ -51,7 +58,7 @@ end
 
 fn = CheckIt::Bash.new
 
-check = YAML::load(File.open('ip4.yml'))
+check = YAML::load(File.open('checks/ip4.yml'))
 puts fn.open_function(check['name'])+"\n"
 if check.has_key?('regex')
   puts fn.regex('1', check['regex'])+"\n"
@@ -68,9 +75,9 @@ if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
     puts fn.max('chunk', check['chunks']['max'])+"\n"
   end
   puts fn.close_chunk_loop+"\n"
-  puts fn.return_success+"\n"
-  puts fn.close_function+"\n"
 end
+puts fn.return_success+"\n"
+puts fn.close_function+"\n"
 
 
 

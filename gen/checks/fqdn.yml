@@ -1,0 +1,4 @@
+name: fqdn
+min_len: 5
+max_len: 256
+regex: ^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$
