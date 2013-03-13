@@ -1,0 +1,6 @@
+name: mac
+min_len: 17
+max_len: 17
+chunks:
+  split_by: ':'
+  regex: ^[0-9a-fA-F]{2}$

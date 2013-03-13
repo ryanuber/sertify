@@ -50,6 +50,14 @@ class CheckIt
       self.indent "[ $#{var_name} -le #{max} ] || return 1"
     end
 
+    def min_len(var_name, min_len)
+      self.indent "[ ${##{var_name}} -ge #{min_len} ] || return 1"
+    end
+
+    def max_len(var_name, max_len)
+      self.indent "[ ${##{var_name}} -le #{max_len} ] || return 1"
+    end
+
     def return_success
       self.indent "return 0"
     end
@@ -58,11 +66,24 @@ end
 
 fn = CheckIt::Bash.new
 
-check = YAML::load(File.open('checks/ip4.yml'))
+check = YAML::load(File.open('checks/mac.yml'))
 puts fn.open_function(check['name'])+"\n"
 if check.has_key?('regex')
   puts fn.regex('1', check['regex'])+"\n"
 end
+if check.has_key?('min')
+  puts fn.min('1', check['min'])+"\n"
+end
+if check.has_key?('max')
+  puts fn.max('1', check['max'])+"\n"
+end
+if check.has_key?('min_len')
+  puts fn.min_len('1', check['min_len'])+"\n"
+end
+if check.has_key?('max_len')
+  puts fn.max_len('1', check['max_len'])+"\n"
+end
+
 if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
   puts fn.open_chunk_loop(check['chunks']['split_by'])+"\n"
   if check['chunks'].has_key?('regex')
@@ -73,6 +94,12 @@ if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
   end
   if check['chunks'].has_key?('max')
     puts fn.max('chunk', check['chunks']['max'])+"\n"
+  end
+  if check['chunks'].has_key?('min_len')
+    puts fn.min_len('chunk', check['chunks']['min_len'])+"\n"
+  end
+  if check['chunks'].has_key?('max_len')
+    puts fn.max_len('chunk', check['chunks']['max_len'])+"\n"
   end
   puts fn.close_chunk_loop+"\n"
 end
