@@ -14,3 +14,8 @@ def is_fqdn(hostname):
     if len(hostname) >= 257:
         return False
     return True
+
+def is_mac(address):
+    if match('^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$', address) == None:
+        return False
+    return True

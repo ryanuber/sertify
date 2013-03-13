@@ -15,3 +15,9 @@ function is_fqdn()
     [ ${#1} -lt 257 ] || return 1
     return 0
 }
+
+function is_mac()
+{
+    [[ "$1" =~ ^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$ ]] || return 1
+    return 0
+}
