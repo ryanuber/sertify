@@ -1,5 +1,5 @@
 #!/bin/bash
-function vet_ip4()
+function is_ip4()
 {
     [[ "$1" =~ ^[1-9]([0-9]){0,2}(\.[0-9]{1,3}){3}$ ]] || return 1
     for OCT in ${1//\./ }; do
@@ -9,7 +9,7 @@ function vet_ip4()
     return 0
 }
 
-function vet_fqdn()
+function is_fqdn()
 {
     [[ "$1" =~ ^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$ ]] || return 1
     [ ${#1} -lt 257 ] || return 1
