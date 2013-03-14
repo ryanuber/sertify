@@ -1,5 +1,5 @@
 name: ip4
-min_len: 17
+min_len: 7
 max_len: 17
 chunks:
   split_by: .

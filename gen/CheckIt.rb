@@ -21,36 +21,36 @@ module CheckIt
     check = YAML::load(File.open(file))
     puts self.open_function(check['name'])+"\n"
     if check.has_key?('regex')
-      puts self.regex('1', check['regex'])+"\n"
+      puts self.regex(@input_var, check['regex'])+"\n"
     end
     if check.has_key?('min')
-      puts self.min('1', check['min'])+"\n"
+      puts self.min(@input_var, check['min'])+"\n"
     end
     if check.has_key?('max')
-      puts self.max('1', check['max'])+"\n"
+      puts self.max(@input_var, check['max'])+"\n"
     end
     if check.has_key?('min_len')
-      puts self.min_len('1', check['min_len'])+"\n"
+      puts self.min_len(@input_var, check['min_len'])+"\n"
     end
     if check.has_key?('max_len')
-      puts self.max_len('1', check['max_len'])+"\n"
+      puts self.max_len(@input_var, check['max_len'])+"\n"
     end
     if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
       puts self.open_chunk_loop(check['chunks']['split_by'])+"\n"
       if check['chunks'].has_key?('regex')
-        puts self.regex('chunk', check['chunks']['regex'])+"\n"
+        puts self.regex(@chunk_var, check['chunks']['regex'])+"\n"
       end
       if check['chunks'].has_key?('min')
-        puts self.min('chunk', check['chunks']['min'])+"\n"
+        puts self.min(@chunk_var, check['chunks']['min'])+"\n"
       end
       if check['chunks'].has_key?('max')
-        puts self.max('chunk', check['chunks']['max'])+"\n"
+        puts self.max(@chunk_var, check['chunks']['max'])+"\n"
       end
       if check['chunks'].has_key?('min_len')
-        puts self.min_len('chunk', check['chunks']['min_len'])+"\n"
+        puts self.min_len(@chunk_var, check['chunks']['min_len'])+"\n"
       end
       if check['chunks'].has_key?('max_len')
-        puts self.max_len('chunk', check['chunks']['max_len'])+"\n"
+        puts self.max_len(@chunk_var, check['chunks']['max_len'])+"\n"
       end
       puts self.close_chunk_loop+"\n"
     end
@@ -64,6 +64,8 @@ module CheckIt
 
     @indent_str = '    '
     @indent_lvl = 0
+    @input_var = '1'
+    @chunk_var = 'CHUNK'
 
     def open_function(name)
       self.indent_more "function is_#{name}() {"
@@ -112,6 +114,8 @@ module CheckIt
 
     @indent_str = '  '
     @indent_lvl = 0
+    @input_var = 'input'
+    @chunk_var = 'chunk'
 
     def open_function(name)
       self.indent_more "def is_#{name}(input)"
@@ -134,11 +138,11 @@ module CheckIt
     end
 
     def min(var_name, min)
-      self.indent "return false if #{var_name} < #{min}"
+      self.indent "return false if #{var_name}.to_i < #{min}"
     end
 
     def max(var_name, max)
-      self.indent "return false if #{var_name} > #{max}"
+      self.indent "return false if #{var_name}.to_i > #{max}"
     end
 
     def min_len(var_name, min_len)
