@@ -1,6 +1,6 @@
 require 'yaml'
 
-module CheckIt
+module CheckLib
 
   def indent(str)
     (@indent_str * @indent_lvl) + str
@@ -59,7 +59,7 @@ module CheckIt
   end
 
   module Bash
-    extend CheckIt
+    extend CheckLib
     extend self
 
     @indent_str = '    '
@@ -109,7 +109,7 @@ module CheckIt
   end
 
   module Ruby
-    extend CheckIt
+    extend CheckLib
     extend self
 
     @indent_str = '  '
@@ -159,7 +159,7 @@ module CheckIt
   end
 
   module Python
-    extend CheckIt
+    extend CheckLib
     extend self
 
     @indent_str = '    '
@@ -227,6 +227,3 @@ module CheckIt
 
 end
 
-CheckIt::Bash.render('checks/ip4.yml')
-CheckIt::Ruby.render('checks/ip4.yml')
-CheckIt::Python.render('checks/ip4.yml')
