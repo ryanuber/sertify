@@ -19,43 +19,44 @@ module CheckLib
 
   def render(file)
     check = YAML::load(File.open(file))
-    print self.open_function(check['name'])+"\n"
+    result = self.open_function(check['name'])+"\n"
     if check.has_key?('regex')
-      print self.regex(@input_var, check['regex'])+"\n"
+      result += self.regex(@input_var, check['regex'])+"\n"
     end
     if check.has_key?('min')
-      puts self.min(@input_var, check['min'])+"\n"
+      result += self.min(@input_var, check['min'])+"\n"
     end
     if check.has_key?('max')
-      puts self.max(@input_var, check['max'])+"\n"
+      result += self.max(@input_var, check['max'])+"\n"
     end
     if check.has_key?('min_len')
-      puts self.min_len(@input_var, check['min_len'])+"\n"
+      result += self.min_len(@input_var, check['min_len'])+"\n"
     end
     if check.has_key?('max_len')
-      puts self.max_len(@input_var, check['max_len'])+"\n"
+      result += self.max_len(@input_var, check['max_len'])+"\n"
     end
     if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
-      puts self.open_chunk_loop(check['chunks']['split_by'])+"\n"
+      result += self.open_chunk_loop(check['chunks']['split_by'])+"\n"
       if check['chunks'].has_key?('regex')
-        puts self.regex(@chunk_var, check['chunks']['regex'])+"\n"
+        result += self.regex(@chunk_var, check['chunks']['regex'])+"\n"
       end
       if check['chunks'].has_key?('min')
-        puts self.min(@chunk_var, check['chunks']['min'])+"\n"
+        result += self.min(@chunk_var, check['chunks']['min'])+"\n"
       end
       if check['chunks'].has_key?('max')
-        puts self.max(@chunk_var, check['chunks']['max'])+"\n"
+        result += self.max(@chunk_var, check['chunks']['max'])+"\n"
       end
       if check['chunks'].has_key?('min_len')
-        puts self.min_len(@chunk_var, check['chunks']['min_len'])+"\n"
+        result += self.min_len(@chunk_var, check['chunks']['min_len'])+"\n"
       end
       if check['chunks'].has_key?('max_len')
-        puts self.max_len(@chunk_var, check['chunks']['max_len'])+"\n"
+        result += self.max_len(@chunk_var, check['chunks']['max_len'])+"\n"
       end
-      puts self.close_chunk_loop+"\n"
+      result += self.close_chunk_loop+"\n"
     end
-    puts self.return_success+"\n"
-    puts self.close_function+"\n"
+    result += self.return_success+"\n"
+    result += self.close_function+"\n"
+    result
   end
 
   module Bash
