@@ -1,26 +1,69 @@
 require 'yaml'
 
-class CheckIt
-  class Bash
-    def initialize
-      @indent_str = '    '
-      @indent_lvl = 0
-    end
+module CheckIt
 
-    def indent(str)
-      (@indent_str * @indent_lvl) + str
-    end
+  def indent(str)
+    (@indent_str * @indent_lvl) + str
+  end
 
-    def indent_more(str)
-      result = self.indent(str)
-      @indent_lvl += 1
-      result
-    end
+  def indent_more(str)
+    result = self.indent(str)
+    @indent_lvl += 1
+    result
+  end
 
-    def indent_less(str)
-      @indent_lvl -= 1
-      self.indent(str)
+  def indent_less(str)
+    @indent_lvl -= 1
+    self.indent(str)
+  end
+
+  def render(file)
+    check = YAML::load(File.open(file))
+    puts self.open_function(check['name'])+"\n"
+    if check.has_key?('regex')
+      puts self.regex('1', check['regex'])+"\n"
     end
+    if check.has_key?('min')
+      puts self.min('1', check['min'])+"\n"
+    end
+    if check.has_key?('max')
+      puts self.max('1', check['max'])+"\n"
+    end
+    if check.has_key?('min_len')
+      puts self.min_len('1', check['min_len'])+"\n"
+    end
+    if check.has_key?('max_len')
+      puts self.max_len('1', check['max_len'])+"\n"
+    end
+    if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
+      puts self.open_chunk_loop(check['chunks']['split_by'])+"\n"
+      if check['chunks'].has_key?('regex')
+        puts self.regex('chunk', check['chunks']['regex'])+"\n"
+      end
+      if check['chunks'].has_key?('min')
+        puts self.min('chunk', check['chunks']['min'])+"\n"
+      end
+      if check['chunks'].has_key?('max')
+        puts self.max('chunk', check['chunks']['max'])+"\n"
+      end
+      if check['chunks'].has_key?('min_len')
+        puts self.min_len('chunk', check['chunks']['min_len'])+"\n"
+      end
+      if check['chunks'].has_key?('max_len')
+        puts self.max_len('chunk', check['chunks']['max_len'])+"\n"
+      end
+      puts self.close_chunk_loop+"\n"
+    end
+    puts self.return_success+"\n"
+    puts self.close_function+"\n"
+  end
+
+  module Bash
+    extend CheckIt
+    extend self
+
+    @indent_str = '    '
+    @indent_lvl = 0
 
     def open_function(name)
       self.indent_more "function is_#{name}() {"
@@ -63,26 +106,12 @@ class CheckIt
     end
   end
 
-  class Ruby
-    def initialize
-      @indent_str = '  '
-      @indent_lvl = 0
-    end
+  module Ruby
+    extend CheckIt
+    extend self
 
-    def indent(str)
-      (@indent_str * @indent_lvl) + str
-    end
-
-    def indent_more(str)
-      result = self.indent(str)
-      @indent_lvl += 1
-      result
-    end
-
-    def indent_less(str)
-      @indent_lvl -= 1
-      self.indent(str)
-    end
+    @indent_str = '  '
+    @indent_lvl = 0
 
     def open_function(name)
       self.indent_more "def is_#{name}(input)"
@@ -127,87 +156,5 @@ class CheckIt
 
 end
 
-fn = CheckIt::Ruby.new
-
-check = YAML::load(File.open('checks/mac.yml'))
-puts fn.open_function(check['name'])+"\n"
-if check.has_key?('regex')
-  puts fn.regex('1', check['regex'])+"\n"
-end
-if check.has_key?('min')
-  puts fn.min('1', check['min'])+"\n"
-end
-if check.has_key?('max')
-  puts fn.max('1', check['max'])+"\n"
-end
-if check.has_key?('min_len')
-  puts fn.min_len('1', check['min_len'])+"\n"
-end
-if check.has_key?('max_len')
-  puts fn.max_len('1', check['max_len'])+"\n"
-end
-
-if check.has_key?('chunks') and check['chunks'].has_key?('split_by')
-  puts fn.open_chunk_loop(check['chunks']['split_by'])+"\n"
-  if check['chunks'].has_key?('regex')
-    puts fn.regex('chunk', check['chunks']['regex'])+"\n"
-  end
-  if check['chunks'].has_key?('min')
-    puts fn.min('chunk', check['chunks']['min'])+"\n"
-  end
-  if check['chunks'].has_key?('max')
-    puts fn.max('chunk', check['chunks']['max'])+"\n"
-  end
-  if check['chunks'].has_key?('min_len')
-    puts fn.min_len('chunk', check['chunks']['min_len'])+"\n"
-  end
-  if check['chunks'].has_key?('max_len')
-    puts fn.max_len('chunk', check['chunks']['max_len'])+"\n"
-  end
-  puts fn.close_chunk_loop+"\n"
-end
-puts fn.return_success+"\n"
-puts fn.close_function+"\n"
-
-
-
-
-
-
-
-
-
-
-#if check.has_key?('bash')
-#  check['bash'].split("\n").each do |line|
-#    puts "    #{line}\n"
-#  end
-#end
-#puts "    return 0\n}\n"
-
-
-####
-# PYTHON
-####
-#puts "def is_#{check['name']}(input):\n"
-#puts "    if match('#{check['regex']}', input) == None:\n"
-#puts "        return False\n"
-#if check.has_key?('python')
-#  check['python'].split("\n").each do |line|
-#    puts "    #{line}\n"
-#  end
-#end
-#puts "    return True\n"
-
-
-####
-# RUBY
-####
-#puts "def is_#{check['name']}(input)\n"
-#puts "  return false if not /#{check['regex']}/.match(input)\n"
-#if check.has_key?('ruby')
-#  check['ruby'].split("\n").each do |line|
-#    puts "  #{line}\n"
-#  end
-#end
-#puts "  return true\nend\n"
+CheckIt::Bash.render('checks/ip4.yml')
+CheckIt::Ruby.render('checks/ip4.yml')
