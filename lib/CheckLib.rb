@@ -17,7 +17,12 @@ module CheckLib
     self.indent(str)
   end
 
+  def reset_indent
+    @indent_lvl = 0
+  end
+
   def render(file)
+    self.reset_indent
     check = YAML::load(File.open(file))
     result = self.open_function(check['name'])+"\n"
     if check.has_key?('regex')

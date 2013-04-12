@@ -1,0 +1,4 @@
+name: email
+min_len: 5
+max_len: 254
+regex: ^[a-zA-Z0-9_\-\.]+@([a-zA-Z0-9\-]+\.)+[a-z]+$
