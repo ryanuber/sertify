@@ -2,6 +2,7 @@ require 'yaml'
 require 'Sertify/Bash'
 require 'Sertify/Python'
 require 'Sertify/Ruby'
+require 'Sertify/Php'
 
 module Sertify
 
