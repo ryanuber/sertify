@@ -1,5 +1,5 @@
-checklib
---------
+sertify - Certify string data
+-----------------------------
 
 Generate input validation code in many languages based on YAML templates.
 
@@ -7,9 +7,9 @@ Example IRB session generating bash, ruby, and python code, all from the same te
 
 ```
 $ irb
->> require 'CheckLib'
+>> require 'Sertify'
 => true
->> print CheckLib::Bash.render('checks/ip4.yml')
+>> print Sertify::Bash.render('checks/ip4.yml')
 function is_ip4() {
     [ ${#1} -ge 7 ] || return 1
     [ ${#1} -le 17 ] || return 1
@@ -21,7 +21,7 @@ function is_ip4() {
     return 0
 }
 => nil
->> print CheckLib::Ruby.render('checks/ip4.yml')
+>> print Sertify::Ruby.render('checks/ip4.yml')
 def is_ip4(input)
   return false if input.length < 7
   return false if input.length > 17
@@ -33,7 +33,7 @@ def is_ip4(input)
   return true
 end
 => nil
->> print CheckLib::Python.render('checks/ip4.yml')
+>> print Sertify::Python.render('checks/ip4.yml')
 def is_ip4(input):
     from re import match
     if len(input) < 7:

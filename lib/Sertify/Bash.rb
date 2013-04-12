@@ -1,6 +1,6 @@
-module CheckLib
+module Sertify
   module Bash
-    extend CheckLib
+    extend Sertify
     extend self
 
     @indent_str = '    '

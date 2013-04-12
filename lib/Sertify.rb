@@ -1,9 +1,9 @@
 require 'yaml'
-require 'CheckLib/Bash'
-require 'CheckLib/Python'
-require 'CheckLib/Ruby'
+require 'Sertify/Bash'
+require 'Sertify/Python'
+require 'Sertify/Ruby'
 
-module CheckLib
+module Sertify
 
   def indent(str)
     (@indent_str * @indent_lvl) + str
