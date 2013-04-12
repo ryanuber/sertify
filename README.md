@@ -7,7 +7,7 @@ Example IRB session generating bash, ruby, and python code, all from the same te
 
 ```
 $ irb
->> require 'lib/CheckLib'
+>> require 'CheckLib'
 => true
 >> print CheckLib::Bash.render('checks/ip4.yml')
 function is_ip4() {
