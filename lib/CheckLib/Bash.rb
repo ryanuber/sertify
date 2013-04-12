@@ -7,6 +7,7 @@ module CheckLib
     @indent_lvl = 0
     @input_var = '1'
     @chunk_var = 'CHUNK'
+    @chunk_count_var = 'CHUNK_COUNT'
 
     def open_function(name)
       self.indent_more "function is_#{name}() {"
@@ -21,11 +22,23 @@ module CheckLib
     end
 
     def open_chunk_loop(split_by)
-      self.indent_more "for chunk in ${1//#{split_by}/ }; do"
+      result = self.indent "#{@chunk_count_var}=0\n"
+      result += self.indent_more "for #{@chunk_var} in ${1//#{split_by}/ }; do"
+      result
     end
 
     def close_chunk_loop
-      self.indent_less "done"
+      result = self.indent "let #{@chunk_count_var}++\n"
+      result += self.indent_less "done"
+      result
+    end
+
+    def open_chunk_iter_item(iter)
+      self.indent_more "if [ $#{@chunk_count_var} == #{iter} ]; then"
+    end
+
+    def close_chunk_iter_item
+      self.indent_less "fi"
     end
 
     def min(var_name, min)

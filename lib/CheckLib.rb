@@ -60,6 +60,27 @@ module CheckLib
       if check['chunks'].has_key?('max_len')
         result += self.max_len(@chunk_var, check['chunks']['max_len'])+"\n"
       end
+      if check['chunks'].has_key?('by_iter')
+        check['chunks']['by_iter'].each do |iter, data|
+          result += self.open_chunk_iter_item(iter)+"\n"
+          if data.has_key?('regex')
+            result += self.regex(@chunk_var, data['regex'])+"\n"
+          end
+          if data.has_key?('min')
+            result += self.min(@chunk_var, data['min'])+"\n"
+          end
+          if data.has_key?('max')
+            result += self.max(@chunk_var, data['max'])+"\n"
+          end
+          if data.has_key?('min_len')
+            result += self.min_len(@chunk_var, data['min_len'])+"\n"
+          end
+          if data.has_key?('max_len')
+            result += self.max_len(@chunk_var, data['max_len'])+"\n"
+          end
+          result += self.close_chunk_iter_item+"\n"
+        end
+      end 
       result += self.close_chunk_loop+"\n"
     end
     result += self.return_success+"\n"
