@@ -1,2 +1,2 @@
-name: query_string
+name: web_query_string
 regex: ^\?[^=]+=(.*)(&[^=]+=[^&]*)+$

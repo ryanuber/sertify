@@ -1,4 +1,4 @@
-name: public_url
+name: web_url
 regex: ^https?://
 chunks:
   split_by: /

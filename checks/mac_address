@@ -1,4 +1,4 @@
-name: mac
+name: mac_address
 min_len: 17
 max_len: 17
 chunks:

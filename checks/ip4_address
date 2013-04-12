@@ -1,4 +1,4 @@
-name: ip4
+name: ip4_address
 min_len: 7
 max_len: 17
 chunks:

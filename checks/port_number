@@ -1,3 +1,3 @@
-name: port
+name: port_number
 min: 1
 max: 65535
