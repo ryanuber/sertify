@@ -31,6 +31,22 @@ function is_fqdn() {
 => nil
 ```
 
+Generating Python code using the same input file as above:
+
+```
+irb(main):003:0> print Sertify::Python.render('checks/fqdn')
+def is_fqdn(input):
+    from re import match
+    if not match('^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$', input):
+        return False
+    if len(input) < 5:
+        return False
+    if len(input) > 256:
+        return False
+    return True
+=> nil
+```
+
 Currently supported language renderers
 --------------------------------------
 
