@@ -15,7 +15,7 @@ regex: ^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$
 
 ... and render it in multiple different programming languages!
 
-bash
+Example generating bash code:
 
 ```
 irb(main):003:0> print Sertify::Bash.render('checks/fqdn')
@@ -28,50 +28,51 @@ function is_fqdn() {
 => nil
 ```
 
-Ruby
+Currently supported language renderers
+--------------------------------------
 
-```
-irb(main):004:0> print Sertify::Ruby.render('checks/fqdn')
-def is_fqdn(input)
-  return false if not /^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$/.match(input)
-  return false if input.length < 5
-  return false if input.length > 256
-  return true
-end
-=> nil
-```
+* Bash
+* Ruby
+* Python
+* PHP
 
-Python
+Syntax of input file
+--------------------
 
-```
-irb(main):005:0> print Sertify::Python.render('checks/fqdn')
-def is_fqdn(input):
-    from re import match
-    if not match('^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$', input):
-        return False
-    if len(input) < 5:
-        return False
-    if len(input) > 256:
-        return False
-    return True
-=> nil
-```
+Input files are simple YAML documents describing what to check.
+Here are the various options you can use to write your function metadata:
 
-PHP
+`name`
+This is the name of the check. The function name will be `is_{name}`.
 
-```
-irb(main):006:0> print Sertify::Php.render('checks/fqdn')
-function is_fqdn($input) {
-    if (preg_match('/^[a-z0-9]([a-z0-9-]+)?((\.[a-z0-9-]+)+)?\.[a-z]+$/', $input) != 1) {
-        return false;
-    }
-    if (strlen($input) < 5) {
-        return false;
-    }
-    if (strlen($input) > 256) {
-        return false;
-    }
-    return true;
-}
-=> nil
-```
+`min`
+Compare the input text as an integer, and make sure it has an absolute value
+at least equivalent to this argument.
+
+`max`
+Similar to min, but specifies the maximum integer allowed.
+
+`min_len`
+Ensure that a string is at least of this length
+
+`max_len`
+Ensure that the string length is at most equivalent to this argument.
+
+`regex`
+This can be either a single regular expression or a list of them. If a list
+is specified, all regular expressions in the list MUST pass in order for
+the function to return success.
+
+`one_of`
+This is a list of regular expressions, of which at least one (but potentially
+more than one) needs to match in order to continue.
+
+`chunks`
+The chunks object allows you to split the input string into multiple smaller
+strings to execute tests on smaller pieces of text. This solves a lot of
+problems where a regular expression is either not possible or far too
+complicated to evaluate chunks of text.
+
+`split_by`
+Within the chunks object, you can use this tag to specify the delimiter
+string for the input.
