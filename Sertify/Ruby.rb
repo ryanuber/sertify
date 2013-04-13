@@ -21,6 +21,16 @@ module Sertify
       self.indent "return false if not /#{regex.gsub('/', '\/')}/.match(#{var_name})"
     end
 
+    def regex_chain(var_name, regex, pos)
+      result = ""
+      result = self.indent_more "if not\n" if pos == 'first'
+      result += self.indent "/#{regex.gsub('/', '\/')}/.match(#{var_name}) or" if pos == 'first' or pos == 'middle'
+      result += self.indent "/#{regex.gsub('/', '\/')}/.match(#{var_name})\n" if pos == 'end'
+      result += self.indent "return false\n" if pos == 'end'
+      result += self.indent_less "end" if pos == 'end'
+      result
+    end
+
     def open_chunk_loop(split_by)
       result = self.indent "#{@chunk_count_var} = 0\n"
       result += self.indent_more "input.split('#{split_by}').each do |chunk|"

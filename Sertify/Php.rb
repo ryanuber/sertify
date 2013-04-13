@@ -24,6 +24,18 @@ module Sertify
       result
     end
 
+    def regex_chain(var_name, regex, pos)
+      result = ""
+      result = self.indent_more "if (!(\n" if pos == 'first'
+      result += self.indent "preg_match('/#{regex.gsub('/', '\/')}/', $#{var_name}) == 1 ||" if pos == 'first' or pos == 'middle'
+      result = self.indent "preg_match('/#{regex.gsub('/', '\/')}/', $#{var_name}) == 1\n" if pos == 'end'
+      result += self.indent_less ")) {\n" if pos == 'end'
+      self.indent_more "" if pos == 'end'
+      result += self.indent "return false;\n" if pos == 'end'
+      result += self.indent_less "}" if pos == 'end'
+      result
+    end
+
     def open_chunk_loop(split_by)
       result = self.indent "$#{@chunk_count_var} = 0;\n"
       result += self.indent_more "foreach (explode('#{split_by}', $#{@input_var}) as $#{@chunk_var}) {"

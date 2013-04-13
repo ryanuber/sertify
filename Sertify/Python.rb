@@ -26,6 +26,18 @@ module Sertify
       result
     end
 
+    def regex_chain(var_name, regex, pos)
+      result = ""
+      result = self.indent_more "if not (\n" if pos == 'first'
+      result += self.indent "match('#{regex}', #{var_name}) or" if pos == 'first' or pos == 'middle'
+      result += self.indent "match('#{regex}', #{var_name})\n" if pos == 'end'
+      result += self.indent_less "):\n" if pos == 'end'
+      self.indent_more "" if pos == 'end'
+      result += self.indent "return False\n" if pos == 'end'
+      self.indent_less "" if pos == 'end'
+      result
+    end
+
     def open_chunk_loop(split_by)
       result = self.indent "#{@chunk_count_var} = 0\n"
       result += self.indent_more "for #{@chunk_var} in #{@input_var}.split(\"#{split_by}\"):"
@@ -34,7 +46,7 @@ module Sertify
 
     def close_chunk_loop
       result = self.indent "#{@chunk_count_var} += 1\n"
-      result += self.indent_less ""
+      self.indent_less ""
       result
     end
 

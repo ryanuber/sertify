@@ -21,6 +21,12 @@ module Sertify
       self.indent "[[ \"$#{var_name}\" =~ #{regex} ]] || return 1"
     end
 
+    def regex_chain(var_name, regex, pos)
+      result = self.indent "[[ \"$#{var_name}\" =~ #{regex} ]] || \\" if pos == 'first' or pos == 'middle'
+      result = self.indent "[[ \"$#{var_name}\" =~ #{regex} ]] || return 1" if pos == 'end'
+      result
+    end
+
     def open_chunk_loop(split_by)
       result = self.indent "#{@chunk_count_var}=0\n"
       result += self.indent_more "for #{@chunk_var} in ${#{@input_var}//#{split_by}/ }; do"

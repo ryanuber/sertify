@@ -25,6 +25,22 @@ module Sertify
     @indent_lvl = 0
   end
 
+  def one_of(var_name, regex_list)
+    result = ""
+    regex_count = 0
+    regex_list.each do |regex|
+      regex_count += 1
+      if regex_count == 1
+        result += self.regex_chain(var_name, regex, 'first')+"\n"
+      elsif regex_count != regex_list.length
+        result += self.regex_chain(var_name, regex, 'middle')+"\n" 
+      else
+        result += self.regex_chain(var_name, regex, 'end')+"\n"
+      end
+    end
+    result
+  end
+
   def render(file)
     self.reset_indent
     check = YAML::load(File.open(file))
@@ -38,6 +54,11 @@ module Sertify
         result += self.regex(@input_var, check['regex'])+"\n"
       end
     end
+
+    if check.has_key?('one_of')
+      result += self.one_of(@input_var, check['one_of'])
+    end
+
     if check.has_key?('min')
       result += self.min(@input_var, check['min'])+"\n"
     end
@@ -54,6 +75,9 @@ module Sertify
       result += self.open_chunk_loop(check['chunks']['split_by'])+"\n"
       if check['chunks'].has_key?('regex')
         result += self.regex(@chunk_var, check['chunks']['regex'])+"\n"
+      end
+      if check['chunks'].has_key?('one_of')
+        result += self.one_of(@chunk_var, check['chunks']['one_of'])
       end
       if check['chunks'].has_key?('min')
         result += self.min(@chunk_var, check['chunks']['min'])+"\n"
