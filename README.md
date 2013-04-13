@@ -1,7 +1,10 @@
-sertify - Certify string data
------------------------------
+sertify | S[tring] [C]ertify
+----------------------------
 
 Generate input validation code in many languages based on YAML templates.
+
+This software is a weekend experiment. It might be useful, but defnitely
+needs more TLC.
 
 In its most simple form, you can take an input file that looks something
 like this...
