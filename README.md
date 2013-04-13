@@ -108,3 +108,18 @@ complicated to evaluate chunks of text.
 `split_by`
 Within the chunks object, you can use this tag to specify the delimiter
 string for the input.
+
+`by_iter`
+When using `chunks`, you can use the `by_iter` syntax to create special
+circumstances for a particular chunk if you know where to expect it. For
+example, you might know that when you split a string by the `,` character,
+the first chunk will be an FQDN. You could use `by_iter` in this case to
+say that element 0 of this chunked array must validate an FQDN regex.
+
+What else is coming?
+--------------------
+
+Some things I could see a need for are:
+
+* Recursive `chunks` syntax, ie, chunk within chunk
+* A fall-through for the `by_iter` to allow validating the remaining pieces
