@@ -30,7 +30,13 @@ module Sertify
     check = YAML::load(File.open(file))
     result = self.open_function(check['name'])+"\n"
     if check.has_key?('regex')
-      result += self.regex(@input_var, check['regex'])+"\n"
+      if check['regex'].kind_of?(Array):
+        check['regex'].each do |pattern|
+          result += self.regex(@input_var, pattern)+"\n"
+        end
+      else
+        result += self.regex(@input_var, check['regex'])+"\n"
+      end
     end
     if check.has_key?('min')
       result += self.min(@input_var, check['min'])+"\n"
