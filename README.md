@@ -69,7 +69,9 @@ Currently supported language renderers
 Syntax of input file
 --------------------
 
-Input files are simple YAML documents describing what to check.
+Input files are simple YAML documents describing what to check. Take a peek in
+the `checks/` directory for some examples.
+
 Here are the various options you can use to write your function metadata:
 
 `name`
