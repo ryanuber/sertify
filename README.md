@@ -2,6 +2,7 @@ sertify | S[tring] [C]ertify
 ----------------------------
 
 Generate input validation code in many languages based on YAML templates.
+
 We all write input validation functions. All the time. In all kinds of
 different languages. Every one of our implementations varies, making it hard
 for data passed between multiple applications written in different
