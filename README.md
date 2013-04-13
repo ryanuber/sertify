@@ -2,6 +2,16 @@ sertify | S[tring] [C]ertify
 ----------------------------
 
 Generate input validation code in many languages based on YAML templates.
+We all write input validation functions. All the time. In all kinds of
+different languages. Every one of our implementations varies, making it hard
+for data passed between multiple applications written in different
+languages to validate in the same way. One validation test might pass in
+one program, but then when it is passed on to the next, it fails, creating
+a gauntlet of input validation functions that is very unpredictable.
+Ideally, you keep the input validation in the same place. But when you
+support multiple input methods (command line, via a REST interface, from
+a shared library, etc..), there comes a need to validate the same data
+in the same way, in different applications.
 
 This software is a weekend experiment. It might be useful, but defnitely
 needs more TLC.
