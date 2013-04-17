@@ -116,6 +116,12 @@ example, you might know that when you split a string by the `,` character,
 the first chunk will be an FQDN. You could use `by_iter` in this case to
 say that element 0 of this chunked array must validate an FQDN regex.
 
+`min_chunks`
+The minimum number of chunks to be found in the string when split
+
+`max_chunks`
+The maximum number of chunks to be found in the string when split
+
 What else is coming?
 --------------------
 
