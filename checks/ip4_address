@@ -1,8 +1,8 @@
 name: ip4_address
-min_len: 7
-max_len: 17
+min_chunks: 4
+max_chunks: 4
 chunks:
   split_by: .
-  regex: ^[1-9][0-9]{0,2}$
+  regex: ^[1-9]
   min: 0
   max: 255

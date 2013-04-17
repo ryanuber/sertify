@@ -48,6 +48,20 @@ module Sertify
       result
     end
 
+    def min_chunks(min)
+      result = self.indent_more "if ($#{@chunk_count_var} < #{min}) {\n"
+      result += self.indent "return false;\n"
+      result += self.indent_less "}"
+      result
+    end
+
+    def max_chunks(max)
+      result = self.indent_more "if ($#{@chunk_count_var} > #{max}) {\n"
+      result += self.indent "return false;\n"
+      result += self.indent_less "}"
+      result
+    end
+
     def open_chunk_iter_item(iter)
       self.indent_more "if ($#{@chunk_count_var} == #{iter}) {"
     end

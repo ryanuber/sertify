@@ -113,6 +113,12 @@ module Sertify
         end
       end 
       result += self.close_chunk_loop+"\n"
+      if check.has_key?('min_chunks')
+        result += self.min_chunks(check['min_chunks'])+"\n"
+      end 
+      if check.has_key?('max_chunks')
+        result += self.max_chunks(check['max_chunks'])+"\n"
+      end
     end
     result += self.return_success+"\n"
     result += self.close_function+"\n"
